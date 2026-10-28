@@ -1,6 +1,3 @@
-const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
-if (!configuredApiUrl) throw new Error('VITE_API_URL must be set in the frontend environment.');
-const API_BASE = configuredApiUrl.replace(/\/$/, '');
 const TOKEN_KEY = 'energytrack:token';
 const USER_KEY = 'energytrack:user';
 export type ApiUser = { id: string; email: string; name: string; created_at?: string };
@@ -24,9 +21,14 @@ export function clearSession() {
   window.localStorage.removeItem(USER_KEY);
   window.dispatchEvent(new Event('energytrack:auth'));
 }
+function getApiBase() {
+  const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+  if (!configuredApiUrl) throw new Error('VITE_API_URL must be set in the frontend environment.');
+  return configuredApiUrl.replace(/\/$/, '');
+}
 export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getToken();
-  const response = await fetch(`${API_BASE}/api${path}`, { ...options, headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers } });
+  const response = await fetch(`${getApiBase()}/api${path}`, { ...options, headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers } });
   if (!response.ok) { const payload = await response.json().catch(() => ({})); throw Object.assign(new Error(payload.message || `Request failed (${response.status})`), { status: response.status }); }
   if (response.status === 204) return undefined as T;
   return response.json();
