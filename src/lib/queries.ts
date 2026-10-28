@@ -1,0 +1,18 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { api, saveStoredUser } from '@/lib/api';
+import { useAuth } from '@/hooks/useAuth';
+import type { Appliance, ApplianceSchedule, EnergyChallenge, UsageHistorySnapshot } from '@/lib/energy';
+export type Settings={user_id:string;currency:string;tariff:number;dark_mode:boolean;notifications:boolean;monthly_budget:number};
+export type Profile={id:string;name:string;email:string;created_at:string};
+export function queryErrorMessage(error:unknown,resource:string){const e=error as {message?:string;status?:number}|null;if(e?.status===401)return 'Your session may have expired. Sign in again and retry.';if(/fetch|network|offline/i.test(e?.message||''))return 'Could not reach the data service. Check your connection and retry.';return e?.message||`Could not load your ${resource}. Check your connection and retry.`}
+export function useAppliances(){const {user}=useAuth();return useQuery({queryKey:['appliances',user?.id],enabled:!!user,queryFn:()=>api<Appliance[]>('/appliances')})}
+export function useSettings(){const {user}=useAuth();return useQuery({queryKey:['settings',user?.id],enabled:!!user,queryFn:()=>api<Settings>('/settings')})}
+export function useProfile(){const {user}=useAuth();return useQuery({queryKey:['profile',user?.id],enabled:!!user,queryFn:()=>api<Profile>('/profile')})}
+export function useEnergyChallenges(){const {user}=useAuth();return useQuery({queryKey:['energy-challenges',user?.id],enabled:!!user,queryFn:()=>api<EnergyChallenge[]>('/challenges')})}
+export function useUsageHistory(){const {user}=useAuth();return useQuery({queryKey:['appliance-usage-history',user?.id],enabled:!!user,queryFn:()=>api<UsageHistorySnapshot[]>('/usage-history')})}
+export type EnergyChallengeInput=Omit<EnergyChallenge,'id'|'created_at'>;
+export function useEnergyChallengeMutations(){const qc=useQueryClient();const invalidate=()=>qc.invalidateQueries({queryKey:['energy-challenges']});return{create:useMutation({mutationFn:(input:Omit<EnergyChallengeInput,'user_id'>)=>api('/challenges',{method:'POST',body:JSON.stringify(input)}),onSuccess:invalidate}),complete:useMutation({mutationFn:({id,completed_at}:{id:string;completed_at:string})=>api(`/challenges/${id}/complete`,{method:'PATCH',body:JSON.stringify({completed_at})}),onSuccess:invalidate}),remove:useMutation({mutationFn:(id:string)=>api(`/challenges/${id}`,{method:'DELETE'}),onSuccess:invalidate})}}
+export function useSaveSettings(){const qc=useQueryClient();return useMutation({mutationFn:(patch:Partial<Settings>)=>api('/settings',{method:'PATCH',body:JSON.stringify(patch)}),onSuccess:()=>qc.invalidateQueries({queryKey:['settings']})})}
+export function useSaveProfile(){const qc=useQueryClient();return useMutation({mutationFn:(patch:{name?:string})=>api<Profile>('/profile',{method:'PATCH',body:JSON.stringify(patch)}),onSuccess:(profile)=>{saveStoredUser(profile);void qc.invalidateQueries({queryKey:['profile']})}})}
+export type ApplianceInput={appliance_name:string;category:string;power_rating:number;daily_usage_hours:number;quantity:number;usage_mode:'manual'|'schedule';schedule:ApplianceSchedule|null};
+export function useApplianceMutations(){const qc=useQueryClient();const invalidate=()=>qc.invalidateQueries({queryKey:['appliances']});return{create:useMutation({mutationFn:(input:ApplianceInput)=>api('/appliances',{method:'POST',body:JSON.stringify(input)}),onSuccess:invalidate}),update:useMutation({mutationFn:({id,...input}:ApplianceInput&{id:string})=>api(`/appliances/${id}`,{method:'PATCH',body:JSON.stringify(input)}),onSuccess:invalidate}),remove:useMutation({mutationFn:(id:string)=>api(`/appliances/${id}`,{method:'DELETE'}),onSuccess:invalidate})}}

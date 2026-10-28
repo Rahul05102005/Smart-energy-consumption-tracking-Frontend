@@ -1,0 +1,21 @@
+# Local env files and secrets
+.env
+.env.*
+
+# Dependencies and generated build output
+node_modules/
+dist/
+dist-ssr/
+.output/
+.tanstack/
+.wrangler/
+.vinxi/
+.nitro/
+*.local
+
+# Logs and local editor state
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/
+.idea/
