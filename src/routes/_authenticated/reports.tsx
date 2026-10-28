@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { FiDownload, FiFileText } from "react-icons/fi";
 import { toast } from "sonner";
 import { useAppliances, useSettings } from "@/lib/queries";
@@ -8,19 +7,8 @@ import { Loader, EmptyState } from "@/components/common/Loader";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export const Route = createFileRoute("/_authenticated/reports")({
-  head: () => ({
-    meta: [
-      { title: "Reports | EnergyTrack" },
-      { name: "description", content: "Daily, weekly and monthly energy reports with PDF and CSV export." },
-      { property: "og:title", content: "Reports | EnergyTrack" },
-      { property: "og:description", content: "Download appliance-wise consumption and bill reports." },
-    ],
-  }),
-  component: ReportsPage,
-});
 
-function ReportsPage() {
+export function ReportsPage() {
   const { data: appliances, isLoading } = useAppliances();
   const { data: settings } = useSettings();
 

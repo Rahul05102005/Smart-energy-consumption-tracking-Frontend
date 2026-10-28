@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "@/lib/router";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -7,19 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export const Route = createFileRoute("/forgot-password")({
-  head: () => ({
-    meta: [
-      { title: "Reset Password | EnergyTrack" },
-      { name: "description", content: "Request a password reset link for your EnergyTrack account." },
-      { property: "og:title", content: "Reset Password | EnergyTrack" },
-      { property: "og:description", content: "Recover access to your energy dashboard." },
-    ],
-  }),
-  component: ForgotPasswordPage,
-});
 
-function ForgotPasswordPage() {
+export function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);

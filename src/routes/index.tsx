@@ -1,25 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "@/lib/router";
 import { FiArrowRight, FiBarChart2, FiCpu, FiDownload, FiPieChart, FiShield, FiZap } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "EnergyTrack | Smart Energy Consumption Dashboard" },
-      {
-        name: "description",
-        content:
-          "Track appliance-wise electricity use, estimate monthly bills and get personalised saving tips — 100% software, no hardware.",
-      },
-      { property: "og:title", content: "EnergyTrack | Smart Energy Consumption Dashboard" },
-      {
-        property: "og:description",
-        content: "Calculate kWh, compare appliances, export reports and cut your electricity bill.",
-      },
-    ],
-  }),
-  component: Landing,
-});
 
 const features = [
   { icon: FiCpu, title: "Appliance manager", text: "Add wattage, daily hours and quantity for every device you own." },
@@ -39,7 +21,7 @@ const futureScope = [
   "Voice assistant control",
 ];
 
-function Landing() {
+export function Landing() {
   return (
     <div className="min-h-screen">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">

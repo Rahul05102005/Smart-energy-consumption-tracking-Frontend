@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useSaveSettings, useSettings } from "@/lib/queries";
@@ -18,25 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export const Route = createFileRoute("/_authenticated/settings")({
-  head: () => ({
-    meta: [
-      { title: "Settings | EnergyTrack" },
-      {
-        name: "description",
-        content: "Configure currency, electricity tariff, dark mode and notifications.",
-      },
-      { property: "og:title", content: "Settings | EnergyTrack" },
-      {
-        property: "og:description",
-        content: "Personalise how EnergyTrack calculates and displays your data.",
-      },
-    ],
-  }),
-  component: SettingsPage,
-});
 
-function SettingsPage() {
+export function SettingsPage() {
   const settingsQuery = useSettings();
   const { data: settings, isLoading } = settingsQuery;
   const save = useSaveSettings();

@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { FiActivity, FiDollarSign, FiTarget } from "react-icons/fi";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState, Loader } from "@/components/common/Loader";
@@ -6,12 +5,8 @@ import { PanelCard, StatCard } from "@/components/common/Cards";
 import { queryErrorMessage, useAppliances, useSettings } from "@/lib/queries";
 import { buildStats, formatCurrency, formatKwh, summarize } from "@/lib/energy";
 
-export const Route = createFileRoute("/_authenticated/forecast")({
-  head: () => ({ meta: [{ title: "Bill Forecast | EnergyTrack" }] }),
-  component: BillForecastPage,
-});
 
-function BillForecastPage() {
+export function BillForecastPage() {
   const applianceQuery = useAppliances();
   const settingsQuery = useSettings();
   const settings = settingsQuery.data;

@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { FiEdit2, FiPlus, FiSearch, FiTrash2 } from "react-icons/fi";
@@ -36,22 +35,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-export const Route = createFileRoute("/_authenticated/appliances")({
-  head: () => ({
-    meta: [
-      { title: "Appliances | EnergyTrack" },
-      {
-        name: "description",
-        content: "Add, edit, search and filter household appliances and their energy usage.",
-      },
-      { property: "og:title", content: "Appliances | EnergyTrack" },
-      { property: "og:description", content: "Full CRUD management of your appliance list." },
-    ],
-  }),
-  component: AppliancesPage,
-});
 
-function AppliancesPage() {
+export function AppliancesPage() {
   const { data: appliances, isLoading } = useAppliances();
   const { data: settings } = useSettings();
   const { create, update, remove } = useApplianceMutations();

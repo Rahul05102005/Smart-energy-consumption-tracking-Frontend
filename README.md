@@ -1,6 +1,6 @@
 # EnergyTrack frontend
 
-Responsive TanStack Start + React frontend for household energy usage and optimization. It calls the Express API in the sibling `../backend` folder; Supabase is not used at runtime.
+React 19 single page application built with Vite. It calls the Express API in the sibling `../backend` folder; Supabase is not used at runtime.
 
 ## Pages
 
@@ -10,8 +10,8 @@ Responsive TanStack Start + React frontend for household energy usage and optimi
 
 ## Local development
 
-From this folder, install frontend dependencies with `npm install` and API dependencies with `npm --prefix ../backend install`. Set `VITE_API_URL=http://localhost:5000` in this folder's `.env`. Set MongoDB and JWT values directly in `../backend/.env`, then start MongoDB. Run both apps with `npm run dev:full`. To run each service separately, use `npm run dev` here and `npm run dev` inside `../backend`.
+Install frontend dependencies with `npm install` and API dependencies with `npm --prefix ../backend install`. Set `VITE_API_URL=http://localhost:5000` in this folder's `.env`. Set MongoDB and JWT values in `../backend/.env`, then start MongoDB. Run both apps with `npm run dev:full`, or run `npm run dev` here and `npm run dev` inside `../backend`.
 
 ## Vercel
 
-Create a Vercel project with this `frontend/` folder as its root. Nitro's Vercel preset builds the TanStack Start app. Set `VITE_API_URL` to the deployed backend origin, without a trailing slash. All frontend API calls use this base URL through `src/lib/api.ts`. Deploy the `backend/` folder as a separate Vercel project and configure its MongoDB, JWT, frontend origin, and optional SMTP environment variables there.
+Create a Vercel project with this `frontend/` folder as its root. The build command is `npm run build` and the output directory is `dist`. Set `VITE_API_URL` in the Vercel project environment variables to the deployed backend origin, without a trailing slash. Deploy `backend/` as a separate Vercel project and configure its MongoDB, JWT, frontend origin, and optional SMTP environment variables there.

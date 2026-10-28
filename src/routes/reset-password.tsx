@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@/lib/router";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -7,17 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export const Route = createFileRoute("/reset-password")({
-  head: () => ({
-    meta: [
-      { title: "Set New Password | EnergyTrack" },
-      { name: "description", content: "Choose a new password for your EnergyTrack account." },
-      { property: "og:title", content: "Set New Password | EnergyTrack" },
-      { property: "og:description", content: "Complete your password reset securely." },
-    ],
-  }),
-  component: ResetPasswordPage,
-});
 
 const schema = z
   .object({
@@ -30,7 +19,7 @@ const schema = z
   })
   .refine((d) => d.password === d.confirm, { message: "Passwords do not match", path: ["confirm"] });
 
-function ResetPasswordPage() {
+export function ResetPasswordPage() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -55,7 +44,7 @@ function ResetPasswordPage() {
       return;
     }
     toast.success("Password updated");
-    void navigate({ to: "/dashboard" });
+    void navigate("/dashboard");
   }
 
   return (

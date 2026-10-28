@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { FiZap } from "react-icons/fi";
 import { useAppliances, useSettings } from "@/lib/queries";
@@ -10,21 +9,10 @@ import { PanelCard } from "@/components/common/Cards";
 import { Loader } from "@/components/common/Loader";
 import { Badge } from "@/components/ui/badge";
 
-export const Route = createFileRoute("/_authenticated/recommendations")({
-  head: () => ({
-    meta: [
-      { title: "Recommendations | EnergyTrack" },
-      { name: "description", content: "Personalised energy-saving recommendations based on your appliance usage." },
-      { property: "og:title", content: "Recommendations | EnergyTrack" },
-      { property: "og:description", content: "Actionable tips that adapt to how you actually use energy." },
-    ],
-  }),
-  component: RecommendationsPage,
-});
 
 const tone = { high: "destructive", medium: "default", low: "secondary" } as const;
 
-function RecommendationsPage() {
+export function RecommendationsPage() {
   const { data: appliances, isLoading } = useAppliances();
   const { data: settings } = useSettings();
   const alerted = useRef(false);

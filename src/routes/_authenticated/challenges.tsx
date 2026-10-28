@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { FiAward, FiTarget } from "react-icons/fi";
@@ -25,10 +24,6 @@ import {
   useSettings,
 } from "@/lib/queries";
 
-export const Route = createFileRoute("/_authenticated/challenges")({
-  head: () => ({ meta: [{ title: "Energy Saving Challenges | EnergyTrack" }] }),
-  component: ChallengesPage,
-});
 
 type ChallengeType = "reduce_energy_percent" | "reduce_appliance_hours";
 
@@ -36,7 +31,7 @@ function isoDate(date: Date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
-function ChallengesPage() {
+export function ChallengesPage() {
   const applianceQuery = useAppliances();
   const settingsQuery = useSettings();
   const challengeQuery = useEnergyChallenges();

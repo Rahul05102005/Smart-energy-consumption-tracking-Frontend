@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { FiActivity, FiAward, FiCpu, FiDollarSign, FiTrendingUp, FiZap } from "react-icons/fi";
 import { useAppliances, useProfile, useSettings } from "@/lib/queries";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,25 +28,8 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 
-export const Route = createFileRoute("/_authenticated/dashboard")({
-  head: () => ({
-    meta: [
-      { title: "Dashboard | EnergyTrack" },
-      {
-        name: "description",
-        content: "Live overview of household energy consumption, bills and appliance trends.",
-      },
-      { property: "og:title", content: "Dashboard | EnergyTrack" },
-      {
-        property: "og:description",
-        content: "Summary cards, charts and recent appliance activity.",
-      },
-    ],
-  }),
-  component: DashboardPage,
-});
 
-function DashboardPage() {
+export function DashboardPage() {
   const { data: appliances, isLoading } = useAppliances();
   const { data: settings } = useSettings();
   const { data: profile } = useProfile();

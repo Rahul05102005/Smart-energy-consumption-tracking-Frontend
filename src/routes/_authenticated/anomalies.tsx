@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { FiAlertTriangle, FiActivity } from "react-icons/fi";
 import { Badge } from "@/components/ui/badge";
@@ -7,12 +6,8 @@ import { PanelCard, StatCard } from "@/components/common/Cards";
 import { queryErrorMessage, useAppliances, useSettings, useUsageHistory } from "@/lib/queries";
 import { analyzeUsageAnomaly, formatCurrency, formatKwh } from "@/lib/energy";
 
-export const Route = createFileRoute("/_authenticated/anomalies")({
-  head: () => ({ meta: [{ title: "Usage Anomalies | EnergyTrack" }] }),
-  component: AnomaliesPage,
-});
 
-function AnomaliesPage() {
+export function AnomaliesPage() {
   const applianceQuery = useAppliances();
   const settingsQuery = useSettings();
   const historyQuery = useUsageHistory();

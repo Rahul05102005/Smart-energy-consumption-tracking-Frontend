@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { FiDollarSign, FiTrendingDown, FiZap } from "react-icons/fi";
 import { Badge } from "@/components/ui/badge";
@@ -24,12 +23,8 @@ import {
 } from "@/lib/energy";
 import { queryErrorMessage, useAppliances, useSettings } from "@/lib/queries";
 
-export const Route = createFileRoute("/_authenticated/upgrade-planner")({
-  head: () => ({ meta: [{ title: "Upgrade Planner | EnergyTrack" }] }),
-  component: UpgradePlannerPage,
-});
 
-function UpgradePlannerPage() {
+export function UpgradePlannerPage() {
   const applianceQuery = useAppliances();
   const settingsQuery = useSettings();
   const appliances = useMemo(() => applianceQuery.data ?? [], [applianceQuery.data]);

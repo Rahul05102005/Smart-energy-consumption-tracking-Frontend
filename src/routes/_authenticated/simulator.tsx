@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { FiActivity, FiDollarSign, FiZap } from "react-icons/fi";
 import { useAppliances, useSettings } from "@/lib/queries";
@@ -21,12 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export const Route = createFileRoute("/_authenticated/simulator")({
-  head: () => ({ meta: [{ title: "What-If Simulator | EnergyTrack" }] }),
-  component: SimulatorPage,
-});
 
-function SimulatorPage() {
+export function SimulatorPage() {
   const appliancesQuery = useAppliances();
   const settingsQuery = useSettings();
   const appliances = useMemo(() => appliancesQuery.data ?? [], [appliancesQuery.data]);

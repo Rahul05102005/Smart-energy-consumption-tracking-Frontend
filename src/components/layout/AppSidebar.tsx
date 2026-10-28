@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useLocation } from "@/lib/router";
 import {
   FiBarChart2,
   FiAlertTriangle,
@@ -52,7 +52,7 @@ const energyTools = [
 export function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-  const pathname = useRouterState({ select: (r) => r.location.pathname });
+  const { pathname } = useLocation();
   const { signOut } = useAuth();
 
   return (

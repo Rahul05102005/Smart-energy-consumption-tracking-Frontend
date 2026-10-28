@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@/lib/router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -10,17 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AuthArt } from "@/components/auth/AuthArt";
 
-export const Route = createFileRoute("/register")({
-  head: () => ({
-    meta: [
-      { title: "Create Account | EnergyTrack" },
-      { name: "description", content: "Create a free EnergyTrack account to calculate appliance energy use and bills." },
-      { property: "og:title", content: "Create Account | EnergyTrack" },
-      { property: "og:description", content: "Start tracking household energy consumption in minutes." },
-    ],
-  }),
-  component: RegisterPage,
-});
 
 const schema = z
   .object({
@@ -40,7 +29,7 @@ const schema = z
     path: ["confirm"],
   });
 
-function RegisterPage() {
+export function RegisterPage() {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
@@ -48,7 +37,7 @@ function RegisterPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!loading && user) void navigate({ to: "/dashboard" });
+    if (!loading && user) void navigate("/dashboard");
   }, [user, loading, navigate]);
 
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -73,7 +62,7 @@ function RegisterPage() {
     }
     setSubmitting(false);
     toast.success("Account created — welcome to EnergyTrack!");
-    void navigate({ to: "/dashboard" });
+    void navigate("/dashboard");
   }
 
   return (

@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@/lib/router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -11,24 +11,13 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AuthArt } from "@/components/auth/AuthArt";
 
-export const Route = createFileRoute("/login")({
-  head: () => ({
-    meta: [
-      { title: "Login | EnergyTrack Energy Dashboard" },
-      { name: "description", content: "Sign in to track appliance energy use, bills and savings on EnergyTrack." },
-      { property: "og:title", content: "Login | EnergyTrack Energy Dashboard" },
-      { property: "og:description", content: "Secure sign in to your household energy dashboard." },
-    ],
-  }),
-  component: LoginPage,
-});
 
 const schema = z.object({
   email: z.string().trim().email("Enter a valid email address").max(255),
   password: z.string().min(6, "Password must be at least 6 characters").max(72),
 });
 
-function LoginPage() {
+export function LoginPage() {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const [email, setEmail] = useState("");
@@ -38,7 +27,7 @@ function LoginPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!loading && user) void navigate({ to: "/dashboard" });
+    if (!loading && user) void navigate("/dashboard");
   }, [user, loading, navigate]);
 
   useEffect(() => {
@@ -67,7 +56,7 @@ function LoginPage() {
     if (remember) localStorage.setItem("energytrack:email", parsed.data.email);
     else localStorage.removeItem("energytrack:email");
     toast.success("Welcome back!");
-    void navigate({ to: "/dashboard" });
+    void navigate("/dashboard");
   }
 
   return (

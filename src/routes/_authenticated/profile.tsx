@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -11,19 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({
-    meta: [
-      { title: "Profile | EnergyTrack" },
-      { name: "description", content: "View account details, edit your profile and change your password." },
-      { property: "og:title", content: "Profile | EnergyTrack" },
-      { property: "og:description", content: "Manage your EnergyTrack account." },
-    ],
-  }),
-  component: ProfilePage,
-});
 
-function ProfilePage() {
+export function ProfilePage() {
   const { user } = useAuth();
   const { data: profile, isLoading } = useProfile();
   const saveProfile = useSaveProfile();

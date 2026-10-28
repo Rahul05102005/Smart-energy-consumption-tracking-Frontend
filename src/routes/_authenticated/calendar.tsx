@@ -1,6 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
 import { useMemo } from "react";
+import { useSearchParams } from "@/lib/router";
 import { FiChevronLeft, FiChevronRight, FiDollarSign, FiZap } from "react-icons/fi";
 import { Calendar } from "@/components/ui/calendar";
 import { EmptyState, Loader } from "@/components/common/Loader";
@@ -9,11 +8,6 @@ import { Button } from "@/components/ui/button";
 import { queryErrorMessage, useAppliances, useSettings } from "@/lib/queries";
 import { dailyConsumptionOnDate, estimateBill, formatCurrency, formatKwh } from "@/lib/energy";
 
-export const Route = createFileRoute("/_authenticated/calendar")({
-  validateSearch: z.object({ date: z.string().optional() }),
-  head: () => ({ meta: [{ title: "Energy Usage Calendar | EnergyTrack" }] }),
-  component: EnergyCalendarPage,
-});
 
 function parseDate(value?: string) {
   if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
@@ -31,9 +25,9 @@ function formatDate(date: Date) {
   return `${year}-${month}-${day}`;
 }
 
-function EnergyCalendarPage() {
-  const search = Route.useSearch();
-  const navigate = Route.useNavigate();
+export function EnergyCalendarPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = { date: searchParams.get("date") ?? undefined };
   const applianceQuery = useAppliances();
   const settingsQuery = useSettings();
   const appliances = useMemo(() => applianceQuery.data ?? [], [applianceQuery.data]);
@@ -54,7 +48,7 @@ function EnergyCalendarPage() {
       selectedDate.getMonth() === next.getMonth()
         ? selectedDate
         : new Date(next.getFullYear(), next.getMonth(), Math.min(selectedDate.getDate(), lastDay));
-    void navigate({ search: { date: formatDate(selected) } });
+    void setSearchParams({ date: formatDate(selected) });
   }
 
   const selectedUsage = useMemo(
@@ -157,7 +151,7 @@ function EnergyCalendarPage() {
             month={month}
             onMonthChange={selectMonth}
             selected={selectedDate}
-            onSelect={(date) => date && void navigate({ search: { date: formatDate(date) } })}
+            onSelect={(date) => date && void setSearchParams({ date: formatDate(date) })}
             modifiers={{
               hasUsage: (date) =>
                 appliances.some((appliance) => dailyConsumptionOnDate(appliance, date) > 0),
